@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.busonline.com/alice/schema/thrift"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:tool="http://www.springframework.org/schema/tool"
+	targetNamespace="http://www.busonline.com/alice/schema/thrift"
+	elementFormDefault="qualified">
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+	<xsd:import namespace="http://www.springframework.org/schema/beans" />
+	<xsd:import namespace="http://www.springframework.org/schema/tool" />
+	<xsd:annotation>
+		<xsd:documentation><![CDATA[ Namespace support for the busap services provided by thrift framework. ]]></xsd:documentation>
+	</xsd:annotation>
+
+
+	<xsd:element name="poolConfig">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+				Creates a thrift client pools
+			]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="host" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[ The service host. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="port" type="xsd:integer" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[ The service port. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="maxIdle" type="xsd:integer" use="optional"
+				default="10">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[ The work thread minsize default 1. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="maxTotal" type="xsd:integer" use="optional"
+				default="10">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[ The work thread minsize default 1. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="socketTimeout" type="xsd:integer"
+				use="optional" default="3000">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[ The socketTimeout default 1. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="maxWaitMillis" type="xsd:long"
+				use="optional" default="1000">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The work thread maxsize default 1000. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="minEvictableIdleTimeMillis" type="xsd:long"
+				use="optional" default="30000">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The request timeout default 2 seconds. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="testOnReturn" use="optional"
+				default="true" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The client timeout default 10 minutes. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="testOnBorrow" use="optional"
+				default="true" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The client timeout default 10 minutes. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="testWhileIdle" use="optional"
+				default="true" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The client timeout default 10 minutes. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="timeBetweenEvictionRunsMillis"
+				type="xsd:long" use="optional" default="3000">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The client timeout default 10 minutes. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="client-factory">
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>connect to thrift.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:sequence> <xsd:element ref="poolConfig" /> </xsd:sequence> 
+					<xsd:attribute name="name" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[ The service name implement. ]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="auto-startup" default="true">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[ Default value is 'true'.]]></xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:union memberTypes="xsd:boolean xsd:string" />
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="bean">
+		<xsd:complexType>
+			<xsd:attribute name="ref" type="xsd:string" />
+		</xsd:complexType>
+	</xsd:element>
+	<!--定义描述信息元素，混合内容元素 -->
+	<xsd:element name="description">
+		<xsd:complexType mixed="true">
+			<xsd:choice minOccurs="0" maxOccurs="1" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<xsd:element name="service">
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>connect to thrift.</xsd:documentation>
+			</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element ref="description" />
+				</xsd:sequence>
+				<xsd:attribute name="id" type="xsd:ID">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The unique identifier for a bean. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="name" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service name implement. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="ref" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ Default value is 'true'.]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="thrift-server">
+		<xsd:complexType>
+			<xsd:attribute name="id" type="xsd:ID" use="optional">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[ The unique identifier for a bean. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[ The service name implement. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="port" type="xsd:integer" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[ The service port. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="handler" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The service implement. ]]></xsd:documentation>
+					<xsd:appinfo>
+						<tool:annotation kind="ref" />
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="minWorkThreads" type="xsd:integer"
+				use="optional" default="1">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[ The work thread minsize default 1. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="maxWorkThreads" type="xsd:integer"
+				use="optional" default="10">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The work thread maxsize default 1000. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="clientTimeout" type="xsd:integer"
+				use="optional" default="2000">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The request timeout default 2 seconds. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="requestTimeout" type="xsd:integer"
+				use="optional" default="2000">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[  The request timeout default 2 seconds. ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="annotation" type="annotationType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[ The annotation config ]]></xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:complexType name="annotationType">
+		<xsd:attribute name="id" type="xsd:ID">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[ The unique identifier for a bean. ]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="package" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[ The scan package. ]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+</xsd:schema>
